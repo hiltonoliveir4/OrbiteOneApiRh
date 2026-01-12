@@ -1,0 +1,249 @@
+{
+  "info": {
+    "_postman_id": "9c7a3c2e-3a6b-4e45-9b5c-91a9b9d2f001",
+    "name": "OrbiteOne API RH",
+    "description": "CRUD de Colaboradores e Afastamentos - API RH",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "auth_token",
+      "value": "SEU_TOKEN_AQUI"
+    }
+  ],
+  "item": [
+    {
+      "name": "Colaboradores",
+      "item": [
+        {
+          "name": "Criar Colaborador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matricula\": \"123\",\n  \"nome\": \"João da Silva\",\n  \"pis\": \"12345678901\",\n  \"cpf\": \"12345678901\",\n  \"data_admissao\": \"2024-01-01\",\n  \"nome_setor\": \"Administrativo\",\n  \"nome_cargo\": \"Analista\",\n  \"nome_departamento\": \"RH\",\n  \"nome_unidade\": \"Matriz\",\n  \"nome_lotacao\": \"RH\",\n  \"situacao\": \"ATIVO\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"ctps\": \"12345\",\n  \"serie\": \"1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/colaboradores",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores"]
+            }
+          }
+        },
+        {
+          "name": "Listar Colaboradores",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/colaboradores",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores"]
+            }
+          }
+        },
+        {
+          "name": "Buscar Colaborador por Matrícula",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/colaboradores/123",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores", "123"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Colaborador",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"situacao\": \"INATIVO\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/colaboradores/123",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores", "123"]
+            }
+          }
+        },
+        {
+          "name": "Remover Colaborador",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/colaboradores/123",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores", "123"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Afastamentos",
+      "item": [
+        {
+          "name": "Criar Afastamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matricula\": \"123\",\n  \"descricao\": \"Afastamento médico\",\n  \"data_inicio\": \"2024-01-10\",\n  \"data_final\": \"2024-01-20\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"codigo_situacao\": \"AF\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/afastamentos",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos"]
+            }
+          }
+        },
+        {
+          "name": "Listar Afastamentos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/afastamentos",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos"]
+            }
+          }
+        },
+        {
+          "name": "Buscar Afastamento por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/afastamentos/1",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Listar Afastamentos por Matrícula",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/afastamentos/matricula/123",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos", "matricula", "123"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Afastamento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Afastamento médico atualizado\",\n  \"data_final\": \"2024-01-25\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/afastamentos/1",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos", "1"]
+            }
+          }
+        },
+        {
+          "name": "Remover Afastamento",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/afastamentos/1",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

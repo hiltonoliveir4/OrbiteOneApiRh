@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["integracao_sisponto"]
+}
+
+model Colaborador {
+  id                Int      @id @default(autoincrement())
+  matricula         String   @unique @db.VarChar(13)
+  nome              String   @db.VarChar(50)
+  pis               String   @db.VarChar(11)
+  cpf               String   @db.VarChar(11)
+  data_admissao     DateTime     @db.Date
+  data_demissao     DateTime?    @db.Date
+  nome_setor        String?  @db.VarChar(40)
+  nome_cargo        String?  @db.VarChar(40)
+  nome_departamento String?  @db.VarChar(40)
+  nome_unidade      String   @db.VarChar(40)
+  nome_lotacao      String   @db.VarChar(40)
+  situacao          String   @db.VarChar(10)
+  cnpj_unidade      String   @db.VarChar(14)
+  ctps              String?  @db.VarChar(15)
+  serie             String?  @db.VarChar(15)
+
+  afastamentos      Afastamento[]
+
+  @@map("colaboradores")
+  @@schema("integracao_sisponto")
+}
+
+model Afastamento {
+  id              Int      @id @default(autoincrement())
+  matricula       String   @db.VarChar(13)
+  descricao       String   @db.VarChar(50)
+  data_inicio     DateTime
+  data_final      DateTime?
+  cnpj_unidade    String?  @db.VarChar(14)
+  codigo_situacao String?  @db.VarChar(10)
+
+  colaborador Colaborador @relation(fields: [matricula], references: [matricula])
+
+  @@map("afastamentos")
+  @@schema("integracao_sisponto")
+}
