@@ -11,11 +11,10 @@ router.use(authMiddleware);
 // CRUD
 router.post('/', controller.criar.bind(controller));
 router.get('/', controller.listar.bind(controller));
+// Extra útil
+router.get('/matricula/:matricula', controller.listarPorMatricula.bind(controller));
 router.get('/:id', controller.buscarPorId.bind(controller));
 router.put('/:id', controller.atualizar.bind(controller));
 router.delete('/:id', controller.remover.bind(controller));
-
-// Extra útil
-router.get('/matricula/:matricula', controller.listarPorMatricula.bind(controller));
 
 export { router as afastamentosRoutes };

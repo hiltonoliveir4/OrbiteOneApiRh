@@ -10,6 +10,7 @@ export default defineConfig({
       all: true,
       include: [
         'src/modules/colaboradores/**/*.ts',
+        'src/modules/afastamentos/**/*.ts',
         'src/shared/middlewares/**/*.ts',
         'src/shared/errors/OrbiteOneError.ts',
       ],
