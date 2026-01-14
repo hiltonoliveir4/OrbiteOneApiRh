@@ -108,6 +108,28 @@ describe('afastamentos routes', () => {
     expect(createArgs.data.data_final).toEqual(expect.any(Date));
   });
 
+  it('returns 500 when creating an afastamento fails', async () => {
+    const app = makeApp();
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    prismaMock.afastamento.create.mockRejectedValue(new Error('boom'));
+
+    const res = await request(app)
+      .post('/afastamentos')
+      .set('Authorization', authToken)
+      .send({
+        matricula: '123',
+        descricao: 'Licenca medica',
+        data_inicio: '2024-01-10',
+      });
+
+    expect(res.status).toBe(500);
+    expect(res.body).toEqual({
+      message: 'Erro interno ao processar a requisição',
+    });
+
+    errorSpy.mockRestore();
+  });
+
   it('lists afastamentos', async () => {
     const app = makeApp();
     prismaMock.afastamento.findMany.mockResolvedValue([
@@ -179,6 +201,23 @@ describe('afastamentos routes', () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual([{ id: 1, matricula: '123' }]);
+  });
+
+  it('returns 500 when listing afastamentos by matricula fails', async () => {
+    const app = makeApp();
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    prismaMock.afastamento.findMany.mockRejectedValue(new Error('boom'));
+
+    const res = await request(app)
+      .get('/afastamentos/matricula/123')
+      .set('Authorization', authToken);
+
+    expect(res.status).toBe(500);
+    expect(res.body).toEqual({
+      message: 'Erro interno ao processar a requisição',
+    });
+
+    errorSpy.mockRestore();
   });
 
   it('updates an afastamento with date strings', async () => {
