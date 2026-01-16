@@ -23,6 +23,33 @@ export class ColaboradorService {
     return this.repository.criar(colaborador);
   }
 
+  async criarEmLote(colaboradores: Prisma.ColaboradorCreateInput[]) {
+    const resultados = [];
+
+    for (const colaborador of colaboradores) {
+      const existente = await this.repository.buscarPorMatricula(
+        colaborador.matricula
+      );
+
+      if (existente) {
+        resultados.push({
+          status: 'existente',
+          message: `funcionario ${colaborador.matricula} ja esta cadastrado`,
+        });
+        continue;
+      }
+
+      const criado = await this.repository.criar(colaborador);
+      resultados.push({
+        status: 'cadastrado',
+        message: `funcionario ${criado.matricula} foi cadastrado`,
+        colaborador: criado,
+      });
+    }
+
+    return resultados;
+  }
+
   async listar() {
     return this.repository.listar();
   }
