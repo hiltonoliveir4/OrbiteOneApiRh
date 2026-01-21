@@ -7,7 +7,9 @@ import { OrbiteOneError } from '@/shared/errors/OrbiteOneError';
 const repository = new ColaboradorRepository();
 const service = new ColaboradorService(repository);
 
-const parseCsv = (body: string): Prisma.ColaboradorCreateInput[] => {
+const parseCsv = (
+  body: string
+): { linha: number; data: Prisma.ColaboradorCreateInput }[] => {
   if (!body || !body.trim()) {
     throw new OrbiteOneError('CSV vazio');
   }
@@ -27,7 +29,7 @@ const parseCsv = (body: string): Prisma.ColaboradorCreateInput[] => {
     throw new OrbiteOneError('CSV inválido');
   }
 
-  return lines.slice(1).map((line) => {
+  return lines.slice(1).map((line, index) => {
     const values = line.split('|');
 
     if (values.length !== headers.length) {
@@ -44,7 +46,10 @@ const parseCsv = (body: string): Prisma.ColaboradorCreateInput[] => {
       {} as Prisma.ColaboradorCreateInput
     );
 
-    return item;
+    return {
+      linha: index + 2,
+      data: item,
+    };
   });
 };
 
@@ -70,8 +75,8 @@ export class ColaboradorController {
       }
 
       const colaboradores = parseCsv(req.body);
-      const criados = await service.criarEmLote(colaboradores);
-      return res.status(201).json(criados);
+      const resultado = await service.criarEmLote(colaboradores);
+      return res.status(201).json(resultado);
     } catch (error: any) {
       next(error);
     }
@@ -83,8 +88,14 @@ export class ColaboradorController {
         throw new OrbiteOneError('Lista de colaboradores inválida');
       }
 
-      const criados = await service.criarEmLote(req.body);
-      return res.status(201).json(criados);
+      const colaboradores = req.body.map(
+        (data: Prisma.ColaboradorCreateInput, index: number) => ({
+          linha: index + 1,
+          data,
+        })
+      );
+      const resultado = await service.criarEmLote(colaboradores);
+      return res.status(201).json(resultado);
     } catch (error: any) {
       next(error);
     }

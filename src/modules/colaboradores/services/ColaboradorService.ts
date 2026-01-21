@@ -23,31 +23,49 @@ export class ColaboradorService {
     return this.repository.criar(colaborador);
   }
 
-  async criarEmLote(colaboradores: Prisma.ColaboradorCreateInput[]) {
-    const resultados = [];
+  async criarEmLote(
+    colaboradores: { linha: number; data: Prisma.ColaboradorCreateInput }[]
+  ) {
+    const linhasComErro: { linha: number; erro: string }[] = [];
+    let criados = 0;
+    let atualizados = 0;
 
-    for (const colaborador of colaboradores) {
-      const existente = await this.repository.buscarPorMatricula(
-        colaborador.matricula
-      );
+    for (const { linha, data } of colaboradores) {
+      try {
+        const existente = await this.repository.buscarPorMatricula(
+          data.matricula
+        );
 
-      if (existente) {
-        resultados.push({
-          status: 'existente',
-          message: `funcionario ${colaborador.matricula} ja esta cadastrado`,
+        if (existente) {
+          await this.repository.atualizar(data.matricula, data);
+          atualizados += 1;
+        } else {
+          await this.repository.criar(data);
+          criados += 1;
+        }
+      } catch (error: any) {
+        linhasComErro.push({
+          linha,
+          erro:
+            error instanceof OrbiteOneError
+              ? error.message
+              : 'Erro ao processar linha',
         });
-        continue;
       }
-
-      const criado = await this.repository.criar(colaborador);
-      resultados.push({
-        status: 'cadastrado',
-        message: `funcionario ${criado.matricula} foi cadastrado`,
-        colaborador: criado,
-      });
     }
 
-    return resultados;
+    const total = colaboradores.length;
+    const sucesso = criados + atualizados;
+    const erros = linhasComErro.length;
+
+    return {
+      total,
+      criados,
+      atualizados,
+      sucesso,
+      erros,
+      linhas_com_erro: linhasComErro,
+    };
   }
 
   async listar() {

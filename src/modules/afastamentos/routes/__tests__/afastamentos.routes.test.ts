@@ -108,6 +108,215 @@ describe('afastamentos routes', () => {
     expect(createArgs.data.data_final).toEqual(expect.any(Date));
   });
 
+  it('creates afastamentos from csv upload', async () => {
+    const app = makeApp();
+    prismaMock.afastamento.findMany
+      .mockResolvedValueOnce([{ id: 10, matricula: '123' }])
+      .mockResolvedValueOnce([]);
+    prismaMock.afastamento.update.mockResolvedValueOnce({
+      id: 10,
+      matricula: '123',
+    });
+    prismaMock.afastamento.create.mockResolvedValueOnce({
+      id: 11,
+      matricula: '124',
+    });
+
+    const csv = [
+      'matricula|descricao|data_inicio|data_final',
+      '123|Licenca|2024-01-10|',
+      '124|Ferias|2024-02-10|2024-03-10',
+    ].join('\n');
+
+    const res = await request(app)
+      .post('/afastamentos/import/csv')
+      .set('Authorization', authToken)
+      .set('Content-Type', 'text/csv')
+      .send(csv);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual({
+      total: 2,
+      criados: 1,
+      atualizados: 1,
+      sucesso: 2,
+      erros: 0,
+      linhas_com_erro: [],
+    });
+    expect(prismaMock.afastamento.create).toHaveBeenCalledTimes(1);
+    expect(prismaMock.afastamento.update).toHaveBeenCalledTimes(1);
+
+    const updateArgs = prismaMock.afastamento.update.mock.calls[0][0];
+    expect(updateArgs.data.data_inicio).toEqual(expect.any(Date));
+    expect(updateArgs.data.data_final).toBeUndefined();
+
+    const createArgs = prismaMock.afastamento.create.mock.calls[0][0];
+    expect(createArgs.data.data_inicio).toEqual(expect.any(Date));
+    expect(createArgs.data.data_final).toEqual(expect.any(Date));
+  });
+
+  it('returns 400 for empty csv upload', async () => {
+    const app = makeApp();
+
+    const res = await request(app)
+      .post('/afastamentos/import/csv')
+      .set('Authorization', authToken)
+      .set('Content-Type', 'text/csv')
+      .send('');
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: 'CSV vazio' });
+  });
+
+  it('returns 400 for csv without data rows', async () => {
+    const app = makeApp();
+
+    const res = await request(app)
+      .post('/afastamentos/import/csv')
+      .set('Authorization', authToken)
+      .set('Content-Type', 'text/csv')
+      .send('matricula|descricao|data_inicio');
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: 'CSV inválido' });
+  });
+
+  it('returns 400 for invalid csv upload', async () => {
+    const app = makeApp();
+
+    const res = await request(app)
+      .post('/afastamentos/import/csv')
+      .set('Authorization', authToken)
+      .set('Content-Type', 'text/csv')
+      .send('matricula|descricao|data_inicio\n123|Licenca');
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: 'CSV inválido' });
+  });
+
+  it('returns 400 for csv with empty headers', async () => {
+    const app = makeApp();
+
+    const res = await request(app)
+      .post('/afastamentos/import/csv')
+      .set('Authorization', authToken)
+      .set('Content-Type', 'text/csv')
+      .send('matricula||descricao\n123||Licenca');
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: 'CSV inválido' });
+  });
+
+  it('returns 400 when csv body is not text', async () => {
+    const app = makeApp();
+
+    const res = await request(app)
+      .post('/afastamentos/import/csv')
+      .set('Authorization', authToken)
+      .send({ matricula: '123' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: 'CSV inválido' });
+  });
+
+  it('creates afastamentos from json list', async () => {
+    const app = makeApp();
+    prismaMock.afastamento.findMany
+      .mockResolvedValueOnce([{ id: 20, matricula: '123' }])
+      .mockResolvedValueOnce([]);
+    prismaMock.afastamento.update.mockResolvedValueOnce({
+      id: 20,
+      matricula: '123',
+    });
+    prismaMock.afastamento.create.mockResolvedValueOnce({
+      id: 21,
+      matricula: '124',
+    });
+
+    const res = await request(app)
+      .post('/afastamentos/import/json')
+      .set('Authorization', authToken)
+      .send([
+        {
+          id: 20,
+          matricula: '123',
+          descricao: 'Licenca',
+          data_inicio: '2024-01-10',
+        },
+        {
+          id: 21,
+          matricula: '124',
+          descricao: 'Ferias',
+          data_inicio: '2024-02-10',
+        },
+      ]);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual({
+      total: 2,
+      criados: 1,
+      atualizados: 1,
+      sucesso: 2,
+      erros: 0,
+      linhas_com_erro: [],
+    });
+    expect(prismaMock.afastamento.create).toHaveBeenCalledTimes(1);
+    expect(prismaMock.afastamento.update).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns 400 for invalid json list', async () => {
+    const app = makeApp();
+
+    const res = await request(app)
+      .post('/afastamentos/import/json')
+      .set('Authorization', authToken)
+      .send({ matricula: '123' });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ message: 'Lista de afastamentos inválida' });
+  });
+
+  it('returns error lines when import has failures', async () => {
+    const app = makeApp();
+    prismaMock.afastamento.findMany
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([]);
+    prismaMock.afastamento.create
+      .mockRejectedValueOnce(new Error('Falha ao criar'))
+      .mockResolvedValueOnce({ id: 12, matricula: '124' });
+
+    const res = await request(app)
+      .post('/afastamentos/import/json')
+      .set('Authorization', authToken)
+      .send([
+        {
+          matricula: '123',
+          descricao: 'Licenca',
+          data_inicio: '2024-01-10',
+        },
+        {
+          matricula: '124',
+          descricao: 'Ferias',
+          data_inicio: '2024-02-10',
+        },
+      ]);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual({
+      total: 2,
+      criados: 1,
+      atualizados: 0,
+      sucesso: 1,
+      erros: 1,
+      linhas_com_erro: [
+        {
+          linha: 1,
+          erro: 'Erro ao processar linha',
+        },
+      ],
+    });
+  });
+
   it('returns 500 when creating an afastamento fails', async () => {
     const app = makeApp();
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});

@@ -150,10 +150,13 @@ describe('colaboradores routes', () => {
   it('creates colaboradores from csv upload', async () => {
     const app = makeApp();
     prismaMock.colaborador.findUnique
-      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({ matricula: '123' })
       .mockResolvedValueOnce(null);
+    prismaMock.colaborador.update.mockResolvedValueOnce({
+      matricula: '123',
+      nome: 'Ana',
+    });
     prismaMock.colaborador.create
-      .mockResolvedValueOnce({ matricula: '123', nome: 'Ana' })
       .mockResolvedValueOnce({ matricula: '124', nome: 'Bea' });
 
     const csv = [
@@ -169,23 +172,24 @@ describe('colaboradores routes', () => {
       .send(csv);
 
     expect(res.status).toBe(201);
-    expect(res.body).toEqual([
-      {
-        status: 'cadastrado',
-        message: 'funcionario 123 foi cadastrado',
-        colaborador: { matricula: '123', nome: 'Ana' },
-      },
-      {
-        status: 'cadastrado',
-        message: 'funcionario 124 foi cadastrado',
-        colaborador: { matricula: '124', nome: 'Bea' },
-      },
-    ]);
-    expect(prismaMock.colaborador.create).toHaveBeenCalledTimes(2);
+    expect(res.body).toEqual({
+      total: 2,
+      criados: 1,
+      atualizados: 1,
+      sucesso: 2,
+      erros: 0,
+      linhas_com_erro: [],
+    });
+    expect(prismaMock.colaborador.create).toHaveBeenCalledTimes(1);
+    expect(prismaMock.colaborador.update).toHaveBeenCalledTimes(1);
 
-    const firstCreateArgs = prismaMock.colaborador.create.mock.calls[0][0];
-    expect(firstCreateArgs.data.data_admissao).toEqual(expect.any(Date));
-    expect(firstCreateArgs.data.data_demissao).toBeUndefined();
+    const updateArgs = prismaMock.colaborador.update.mock.calls[0][0];
+    expect(updateArgs.data.data_admissao).toEqual(expect.any(Date));
+    expect(updateArgs.data.data_demissao).toBeUndefined();
+
+    const createArgs = prismaMock.colaborador.create.mock.calls[0][0];
+    expect(createArgs.data.data_admissao).toEqual(expect.any(Date));
+    expect(createArgs.data.data_demissao).toEqual(expect.any(Date));
   });
 
   it('returns 400 for empty csv upload', async () => {
@@ -208,7 +212,7 @@ describe('colaboradores routes', () => {
       .post('/colaboradores/import/csv')
       .set('Authorization', authToken)
       .set('Content-Type', 'text/csv')
-      .send('matricula,nome');
+      .send('matricula|nome');
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: 'CSV inválido' });
@@ -255,10 +259,16 @@ describe('colaboradores routes', () => {
   it('creates colaboradores from json list', async () => {
     const app = makeApp();
     prismaMock.colaborador.findUnique
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce({ matricula: '126', nome: 'Dani' });
-    prismaMock.colaborador.create
-      .mockResolvedValueOnce({ matricula: '125', nome: 'Cris' });
+      .mockResolvedValueOnce({ matricula: '125', nome: 'Cris' })
+      .mockResolvedValueOnce(null);
+    prismaMock.colaborador.update.mockResolvedValueOnce({
+      matricula: '125',
+      nome: 'Cris',
+    });
+    prismaMock.colaborador.create.mockResolvedValueOnce({
+      matricula: '126',
+      nome: 'Dani',
+    });
 
     const res = await request(app)
       .post('/colaboradores/import/json')
@@ -289,18 +299,16 @@ describe('colaboradores routes', () => {
       ]);
 
     expect(res.status).toBe(201);
-    expect(res.body).toEqual([
-      {
-        status: 'cadastrado',
-        message: 'funcionario 125 foi cadastrado',
-        colaborador: { matricula: '125', nome: 'Cris' },
-      },
-      {
-        status: 'existente',
-        message: 'funcionario 126 ja esta cadastrado',
-      },
-    ]);
+    expect(res.body).toEqual({
+      total: 2,
+      criados: 1,
+      atualizados: 1,
+      sucesso: 2,
+      erros: 0,
+      linhas_com_erro: [],
+    });
     expect(prismaMock.colaborador.create).toHaveBeenCalledTimes(1);
+    expect(prismaMock.colaborador.update).toHaveBeenCalledTimes(1);
   });
 
   it('returns 400 for invalid json list', async () => {
@@ -313,6 +321,59 @@ describe('colaboradores routes', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ message: 'Lista de colaboradores inválida' });
+  });
+
+  it('returns error lines when import has failures', async () => {
+    const app = makeApp();
+    prismaMock.colaborador.findUnique
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(null);
+    prismaMock.colaborador.create
+      .mockRejectedValueOnce(new Error('Falha ao criar'))
+      .mockResolvedValueOnce({ matricula: '124', nome: 'Bea' });
+
+    const res = await request(app)
+      .post('/colaboradores/import/json')
+      .set('Authorization', authToken)
+      .send([
+        {
+          matricula: '123',
+          nome: 'Ana',
+          pis: '111',
+          cpf: '222',
+          data_admissao: '2024-01-01',
+          nome_unidade: 'Unidade A',
+          nome_lotacao: 'Lotacao A',
+          situacao: 'ATIVO',
+          cnpj_unidade: '12345678901234',
+        },
+        {
+          matricula: '124',
+          nome: 'Bea',
+          pis: '333',
+          cpf: '444',
+          data_admissao: '2024-02-01',
+          nome_unidade: 'Unidade A',
+          nome_lotacao: 'Lotacao A',
+          situacao: 'ATIVO',
+          cnpj_unidade: '12345678901234',
+        },
+      ]);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toEqual({
+      total: 2,
+      criados: 1,
+      atualizados: 0,
+      sucesso: 1,
+      erros: 1,
+      linhas_com_erro: [
+        {
+          linha: 1,
+          erro: 'Erro ao processar linha',
+        },
+      ],
+    });
   });
 
   it('returns 500 on unexpected errors', async () => {

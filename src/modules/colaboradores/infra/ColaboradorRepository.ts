@@ -26,9 +26,18 @@ export class ColaboradorRepository {
   }
 
   async atualizar(matricula: string, data: Partial<Colaborador>) {
+    const patched: Partial<Colaborador> = { ...data };
+
+    if (typeof (patched as any).data_admissao === 'string') {
+      (patched as any).data_admissao = new Date((patched as any).data_admissao);
+    }
+    if (typeof (patched as any).data_demissao === 'string') {
+      (patched as any).data_demissao = new Date((patched as any).data_demissao);
+    }
+
     return prisma.colaborador.update({
       where: { matricula },
-      data
+      data: patched
     });
   }
 

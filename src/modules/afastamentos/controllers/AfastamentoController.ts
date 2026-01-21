@@ -1,15 +1,96 @@
 import { Request, Response, NextFunction } from 'express';
+import { Prisma } from '@prisma/client';
 import { AfastamentoRepository } from '../infra/AfastamentoRepository';
 import { AfastamentoService } from '../services/AfastamentoService';
+import { OrbiteOneError } from '@/shared/errors/OrbiteOneError';
 
 const repository = new AfastamentoRepository();
 const service = new AfastamentoService(repository);
+
+const parseCsv = (
+  body: string
+): { linha: number; data: Prisma.AfastamentoCreateInput }[] => {
+  if (!body || !body.trim()) {
+    throw new OrbiteOneError('CSV vazio');
+  }
+
+  const lines = body
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length < 2) {
+    throw new OrbiteOneError('CSV inválido');
+  }
+
+  const headers = lines[0].split('|').map((header) => header.trim());
+
+  if (headers.some((header) => !header)) {
+    throw new OrbiteOneError('CSV inválido');
+  }
+
+  return lines.slice(1).map((line, index) => {
+    const values = line.split('|');
+
+    if (values.length !== headers.length) {
+      throw new OrbiteOneError('CSV inválido');
+    }
+
+    const item = headers.reduce<Prisma.AfastamentoCreateInput>(
+      (acc, header, index) => {
+        const rawValue = values[index].trim();
+        (acc as Record<string, any>)[header] =
+          rawValue === '' ? undefined : rawValue;
+        return acc;
+      },
+      {} as Prisma.AfastamentoCreateInput
+    );
+
+    return {
+      linha: index + 2,
+      data: item,
+    };
+  });
+};
 
 export class AfastamentoController {
   async criar(req: Request, res: Response, next: NextFunction) {
     try {
       const afastamento = await service.criar(req.body);
       return res.status(201).json(afastamento);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async criarEmLoteCsv(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (typeof req.body !== 'string') {
+        throw new OrbiteOneError('CSV inválido');
+      }
+
+      const afastamentos = parseCsv(req.body);
+      const resultado = await service.criarEmLote(afastamentos);
+      return res.status(201).json(resultado);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async criarEmLoteJson(req: Request, res: Response, next: NextFunction) {
+    try {
+      if (!Array.isArray(req.body)) {
+        throw new OrbiteOneError('Lista de afastamentos inválida');
+      }
+
+      const afastamentos = req.body.map(
+        (data: Prisma.AfastamentoCreateInput, index: number) => ({
+          linha: index + 1,
+          data,
+        })
+      );
+      const resultado = await service.criarEmLote(afastamentos);
+      return res.status(201).json(resultado);
     } catch (error) {
       next(error);
     }
