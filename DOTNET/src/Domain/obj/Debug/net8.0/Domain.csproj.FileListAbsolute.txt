@@ -1,0 +1,12 @@
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/bin/Debug/net8.0/Domain.deps.json
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/bin/Debug/net8.0/Domain.dll
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/bin/Debug/net8.0/Domain.pdb
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfoInputs.cache
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfo.cs
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.csproj.CoreCompileInputs.cache
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.sourcelink.json
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.dll
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/refint/Domain.dll
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/Domain.pdb
+/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/Debug/net8.0/ref/Domain.dll

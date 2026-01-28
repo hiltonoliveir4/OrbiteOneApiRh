@@ -8,10 +8,10 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "http://localhost:3000"
+      "value": "http://localhost:5000"
     },
     {
-      "key": "auth_token",
+      "key": "API_KEY",
       "value": "SEU_TOKEN_AQUI"
     }
   ],
@@ -25,8 +25,8 @@
             "method": "POST",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               },
               {
                 "key": "Content-Type",
@@ -45,13 +45,63 @@
           }
         },
         {
+          "name": "Importar Colaboradores (CSV)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "text/csv"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "matricula|nome|pis|cpf|data_admissao|data_demissao|nome_unidade|nome_lotacao|situacao|cnpj_unidade\n123|Ana|111|222|2024-01-01||Unidade A|Lotacao A|ATIVO|12345678901234\n124|Bea|333|444|2024-02-01|2024-03-01|Unidade A|Lotacao A|ATIVO|12345678901234"
+            },
+            "url": {
+              "raw": "{{base_url}}/colaboradores/import/csv",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores", "import", "csv"]
+            }
+          }
+        },
+        {
+          "name": "Importar Colaboradores (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"matricula\": \"125\",\n    \"nome\": \"Cris\",\n    \"pis\": \"555\",\n    \"cpf\": \"666\",\n    \"data_admissao\": \"2024-03-01\",\n    \"nome_unidade\": \"Unidade B\",\n    \"nome_lotacao\": \"Lotacao B\",\n    \"situacao\": \"ATIVO\",\n    \"cnpj_unidade\": \"12345678901234\"\n  },\n  {\n    \"matricula\": \"126\",\n    \"nome\": \"Dani\",\n    \"pis\": \"777\",\n    \"cpf\": \"888\",\n    \"data_admissao\": \"2024-04-01\",\n    \"nome_unidade\": \"Unidade B\",\n    \"nome_lotacao\": \"Lotacao B\",\n    \"situacao\": \"ATIVO\",\n    \"cnpj_unidade\": \"12345678901234\"\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/colaboradores/import/json",
+              "host": ["{{base_url}}"],
+              "path": ["colaboradores", "import", "json"]
+            }
+          }
+        },
+        {
           "name": "Listar Colaboradores",
           "request": {
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {
@@ -67,8 +117,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {
@@ -84,8 +134,8 @@
             "method": "PUT",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               },
               {
                 "key": "Content-Type",
@@ -109,8 +159,8 @@
             "method": "DELETE",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {
@@ -131,8 +181,8 @@
             "method": "POST",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               },
               {
                 "key": "Content-Type",
@@ -141,7 +191,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"matricula\": \"123\",\n  \"descricao\": \"Afastamento médico\",\n  \"data_inicio\": \"2024-01-10\",\n  \"data_final\": \"2024-01-20\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"codigo_situacao\": \"AF\"\n}"
+              "raw": "{\n  \"matricula\": \"123\",\n  \"descricao\": \"Afastamento médico\",\n  \"data_inicio\": \"2024-01-10T00:00:00\",\n  \"data_final\": \"2024-01-20T00:00:00\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"codigo_situacao\": \"AF\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/afastamentos",
@@ -151,13 +201,63 @@
           }
         },
         {
+          "name": "Importar Afastamentos (CSV)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "text/csv"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "matricula|descricao|data_inicio|data_final\n123|Licenca|2024-01-10|\n124|Ferias|2024-02-10|2024-03-10"
+            },
+            "url": {
+              "raw": "{{base_url}}/afastamentos/import/csv",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos", "import", "csv"]
+            }
+          }
+        },
+        {
+          "name": "Importar Afastamentos (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"id\": 20,\n    \"matricula\": \"123\",\n    \"descricao\": \"Licenca\",\n    \"data_inicio\": \"2024-01-10T00:00:00\"\n  },\n  {\n    \"id\": 21,\n    \"matricula\": \"124\",\n    \"descricao\": \"Ferias\",\n    \"data_inicio\": \"2024-02-10T00:00:00\"\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/afastamentos/import/json",
+              "host": ["{{base_url}}"],
+              "path": ["afastamentos", "import", "json"]
+            }
+          }
+        },
+        {
           "name": "Listar Afastamentos",
           "request": {
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {
@@ -173,8 +273,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {
@@ -190,8 +290,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {
@@ -207,8 +307,8 @@
             "method": "PUT",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               },
               {
                 "key": "Content-Type",
@@ -217,7 +317,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"descricao\": \"Afastamento médico atualizado\",\n  \"data_final\": \"2024-01-25\"\n}"
+              "raw": "{\n  \"descricao\": \"Afastamento médico atualizado\",\n  \"data_final\": \"2024-01-25T00:00:00\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/afastamentos/1",
@@ -232,8 +332,8 @@
             "method": "DELETE",
             "header": [
               {
-                "key": "Authorization",
-                "value": "{{auth_token}}"
+                "key": "X-API-KEY",
+                "value": "{{API_KEY}}"
               }
             ],
             "url": {

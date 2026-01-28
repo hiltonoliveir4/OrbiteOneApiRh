@@ -1,0 +1,118 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Application/Application.csproj": {}
+  },
+  "projects": {
+    "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Application/Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Application/Application.csproj",
+        "projectName": "Application",
+        "projectPath": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Application/Application.csproj",
+        "packagesPath": "/home/hilton/.nuget/packages/",
+        "outputPath": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Application/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/hilton/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/Domain.csproj": {
+                "projectPath": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.122/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/Domain.csproj",
+        "packagesPath": "/home/hilton/.nuget/packages/",
+        "outputPath": "/home/hilton/Documentos/power/orbiteOneApiRH/DOTNET/src/Domain/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/hilton/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.122/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

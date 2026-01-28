@@ -64,7 +64,6 @@ Crie um arquivo `.env`:
 
 ```env
 DATABASE_URL=postgresql://usuario:senha@localhost:5432/orbiteone_rh
-SHADOW_DATABASE_URL=postgresql://usuario:senha@localhost:5432/orbiteone_rh_shadow
 API_AUTH_TOKEN=SEU_TOKEN_AQUI
 ```
 
@@ -94,7 +93,7 @@ http://localhost:3000
 
 ## 🔑 Autenticação
 
-Todas as rotas exigem o header:
+Todas as rotas exigem o header: 
 
 ```
 Authorization: Bearer SEU_TOKEN_AQUI
