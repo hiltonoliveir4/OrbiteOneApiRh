@@ -16,4 +16,5 @@ public class ColaboradorUpdateDto
     public string? CnpjUnidade { get; set; }
     public string? Ctps { get; set; }
     public string? Serie { get; set; }
+    public long? EmpregadoId { get; set; }
 }
