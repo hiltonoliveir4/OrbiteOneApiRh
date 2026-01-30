@@ -38,6 +38,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.CnpjUnidade).HasColumnName("cnpj_unidade").HasMaxLength(14).IsRequired();
             entity.Property(e => e.Ctps).HasColumnName("ctps").HasMaxLength(15);
             entity.Property(e => e.Serie).HasColumnName("serie").HasMaxLength(15);
+            entity.Property(e => e.DataMovimento).HasColumnName("datamovimento").HasColumnType("timestamp without time zone").IsRequired();
 
             entity.HasMany(e => e.Afastamentos)
                 .WithOne(e => e.Colaborador)
@@ -57,6 +58,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.DataFinal).HasColumnName("data_final");
             entity.Property(e => e.CnpjUnidade).HasColumnName("cnpj_unidade").HasMaxLength(14);
             entity.Property(e => e.CodigoSituacao).HasColumnName("codigo_situacao").HasMaxLength(10);
+            entity.Property(e => e.DataMovimento).HasColumnName("datamovimento").HasColumnType("timestamp without time zone").IsRequired();
         });
     }
 }

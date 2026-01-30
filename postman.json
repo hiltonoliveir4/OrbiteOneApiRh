@@ -105,9 +105,15 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/colaboradores",
+              "raw": "{{base_url}}/colaboradores?datamovimento=01/01/2021",
               "host": ["{{base_url}}"],
-              "path": ["colaboradores"]
+              "path": ["colaboradores"],
+              "query": [
+                {
+                  "key": "datamovimento",
+                  "value": "01/01/2021"
+                }
+              ]
             }
           }
         },
@@ -261,9 +267,15 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/afastamentos",
+              "raw": "{{base_url}}/afastamentos?datamovimento=01/01/2021",
               "host": ["{{base_url}}"],
-              "path": ["afastamentos"]
+              "path": ["afastamentos"],
+              "query": [
+                {
+                  "key": "datamovimento",
+                  "value": "01/01/2021"
+                }
+              ]
             }
           }
         },

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Application.DTOs.Afastamentos;
 
 public class AfastamentoDto
@@ -9,4 +11,6 @@ public class AfastamentoDto
     public DateTime? DataFinal { get; set; }
     public string? CnpjUnidade { get; set; }
     public string? CodigoSituacao { get; set; }
+    [JsonPropertyName("datamovimento")]
+    public DateTime DataMovimento { get; set; }
 }

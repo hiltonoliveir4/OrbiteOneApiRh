@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Application.DTOs.Colaboradores;
 
 public class ColaboradorDto
@@ -17,4 +19,6 @@ public class ColaboradorDto
     public string CnpjUnidade { get; set; } = string.Empty;
     public string? Ctps { get; set; }
     public string? Serie { get; set; }
+    [JsonPropertyName("datamovimento")]
+    public DateTime DataMovimento { get; set; }
 }

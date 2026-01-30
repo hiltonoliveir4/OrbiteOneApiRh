@@ -24,6 +24,13 @@ public class ColaboradorRepository : IColaboradorRepository
         return _db.Colaboradores.AsNoTracking().ToListAsync(cancellationToken);
     }
 
+    public Task<List<Colaborador>> ListarPorDataMovimento(DateTime dataMovimento, CancellationToken cancellationToken = default)
+    {
+        return _db.Colaboradores.AsNoTracking()
+            .Where(x => x.DataMovimento >= dataMovimento)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Colaborador> Criar(Colaborador colaborador, CancellationToken cancellationToken = default)
     {
         _db.Colaboradores.Add(colaborador);

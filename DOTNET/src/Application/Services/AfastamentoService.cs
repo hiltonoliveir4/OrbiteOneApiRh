@@ -77,9 +77,11 @@ public class AfastamentoService
         };
     }
 
-    public async Task<List<AfastamentoDto>> Listar(CancellationToken cancellationToken = default)
+    public async Task<List<AfastamentoDto>> Listar(DateTime? dataMovimento, CancellationToken cancellationToken = default)
     {
-        var itens = await _repository.Listar(cancellationToken);
+        var itens = dataMovimento.HasValue
+            ? await _repository.ListarPorDataMovimento(dataMovimento.Value, cancellationToken)
+            : await _repository.Listar(cancellationToken);
         return itens.Select(MapDto).ToList();
     }
 
@@ -132,6 +134,7 @@ public class AfastamentoService
             DataFinal = dto.DataFinal,
             CnpjUnidade = dto.CnpjUnidade,
             CodigoSituacao = dto.CodigoSituacao,
+            DataMovimento = DateTime.Now,
         };
     }
 
@@ -145,6 +148,7 @@ public class AfastamentoService
             DataFinal = dto.DataFinal,
             CnpjUnidade = dto.CnpjUnidade,
             CodigoSituacao = dto.CodigoSituacao,
+            DataMovimento = DateTime.Now,
         };
     }
 
@@ -156,6 +160,7 @@ public class AfastamentoService
         if (dto.DataFinal.HasValue) afastamento.DataFinal = dto.DataFinal.Value;
         if (dto.CnpjUnidade != null) afastamento.CnpjUnidade = dto.CnpjUnidade;
         if (dto.CodigoSituacao != null) afastamento.CodigoSituacao = dto.CodigoSituacao;
+        afastamento.DataMovimento = DateTime.Now;
     }
 
     private static void ApplyPatch(Afastamento afastamento, AfastamentoImportDto dto)
@@ -166,6 +171,7 @@ public class AfastamentoService
         if (dto.DataFinal.HasValue) afastamento.DataFinal = dto.DataFinal.Value;
         if (dto.CnpjUnidade != null) afastamento.CnpjUnidade = dto.CnpjUnidade;
         if (dto.CodigoSituacao != null) afastamento.CodigoSituacao = dto.CodigoSituacao;
+        afastamento.DataMovimento = DateTime.Now;
     }
 
     private static AfastamentoDto MapDto(Afastamento afastamento)
@@ -179,6 +185,7 @@ public class AfastamentoService
             DataFinal = afastamento.DataFinal,
             CnpjUnidade = afastamento.CnpjUnidade,
             CodigoSituacao = afastamento.CodigoSituacao,
+            DataMovimento = afastamento.DataMovimento,
         };
     }
 }

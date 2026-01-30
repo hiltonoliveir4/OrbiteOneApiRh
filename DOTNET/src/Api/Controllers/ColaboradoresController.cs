@@ -4,6 +4,7 @@ using Application.Services;
 using Application.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Text.Json;
 
 namespace Api.Controllers;
@@ -57,9 +58,21 @@ public class ColaboradoresController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Listar(CancellationToken cancellationToken)
+    public async Task<IActionResult> Listar([FromQuery(Name = "datamovimento")] string? dataMovimento, CancellationToken cancellationToken)
     {
-        var itens = await _service.Listar(cancellationToken);
+        DateTime? filtro = null;
+
+        if (!string.IsNullOrWhiteSpace(dataMovimento))
+        {
+            if (!TryParseDataMovimento(dataMovimento, out var parsed))
+            {
+                throw new OrbiteOneException("Data de movimento inválida");
+            }
+
+            filtro = parsed.Date;
+        }
+
+        var itens = await _service.Listar(filtro, cancellationToken);
         return Ok(itens);
     }
 
@@ -82,5 +95,11 @@ public class ColaboradoresController : ControllerBase
     {
         await _service.Remover(matricula, cancellationToken);
         return NoContent();
+    }
+
+    private static bool TryParseDataMovimento(string value, out DateTime parsed)
+    {
+        var formats = new[] { "dd/MM/yyyy", "yyyy-MM-dd" };
+        return DateTime.TryParseExact(value, formats, CultureInfo.GetCultureInfo("pt-BR"), DateTimeStyles.AssumeLocal, out parsed);
     }
 }

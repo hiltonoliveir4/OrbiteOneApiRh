@@ -9,6 +9,7 @@ public class Afastamento
     public DateTime? DataFinal { get; set; }
     public string? CnpjUnidade { get; set; }
     public string? CodigoSituacao { get; set; }
+    public DateTime DataMovimento { get; set; }
 
     public Colaborador? Colaborador { get; set; }
 }

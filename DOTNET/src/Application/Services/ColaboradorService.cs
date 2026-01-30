@@ -82,9 +82,11 @@ public class ColaboradorService
         };
     }
 
-    public async Task<List<ColaboradorDto>> Listar(CancellationToken cancellationToken = default)
+    public async Task<List<ColaboradorDto>> Listar(DateTime? dataMovimento, CancellationToken cancellationToken = default)
     {
-        var itens = await _repository.Listar(cancellationToken);
+        var itens = dataMovimento.HasValue
+            ? await _repository.ListarPorDataMovimento(dataMovimento.Value, cancellationToken)
+            : await _repository.Listar(cancellationToken);
         return itens.Select(MapDto).ToList();
     }
 
@@ -140,6 +142,7 @@ public class ColaboradorService
             CnpjUnidade = dto.CnpjUnidade,
             Ctps = dto.Ctps,
             Serie = dto.Serie,
+            DataMovimento = DateTime.Now,
         };
     }
 
@@ -162,6 +165,7 @@ public class ColaboradorService
             CnpjUnidade = dto.CnpjUnidade ?? string.Empty,
             Ctps = dto.Ctps,
             Serie = dto.Serie,
+            DataMovimento = DateTime.Now,
         };
     }
 
@@ -181,6 +185,7 @@ public class ColaboradorService
         if (dto.CnpjUnidade != null) colaborador.CnpjUnidade = dto.CnpjUnidade;
         if (dto.Ctps != null) colaborador.Ctps = dto.Ctps;
         if (dto.Serie != null) colaborador.Serie = dto.Serie;
+        colaborador.DataMovimento = DateTime.Now;
     }
 
     private static void ApplyPatch(Colaborador colaborador, ColaboradorImportDto dto)
@@ -199,6 +204,7 @@ public class ColaboradorService
         if (dto.CnpjUnidade != null) colaborador.CnpjUnidade = dto.CnpjUnidade;
         if (dto.Ctps != null) colaborador.Ctps = dto.Ctps;
         if (dto.Serie != null) colaborador.Serie = dto.Serie;
+        colaborador.DataMovimento = DateTime.Now;
     }
 
     private static ColaboradorDto MapDto(Colaborador colaborador)
@@ -220,6 +226,7 @@ public class ColaboradorService
             CnpjUnidade = colaborador.CnpjUnidade,
             Ctps = colaborador.Ctps,
             Serie = colaborador.Serie,
+            DataMovimento = colaborador.DataMovimento,
         };
     }
 }

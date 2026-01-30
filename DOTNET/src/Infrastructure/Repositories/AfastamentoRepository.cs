@@ -24,6 +24,13 @@ public class AfastamentoRepository : IAfastamentoRepository
         return _db.Afastamentos.AsNoTracking().ToListAsync(cancellationToken);
     }
 
+    public Task<List<Afastamento>> ListarPorDataMovimento(DateTime dataMovimento, CancellationToken cancellationToken = default)
+    {
+        return _db.Afastamentos.AsNoTracking()
+            .Where(x => x.DataMovimento >= dataMovimento)
+            .ToListAsync(cancellationToken);
+    }
+
     public Task<List<Afastamento>> ListarPorMatricula(string matricula, CancellationToken cancellationToken = default)
     {
         return _db.Afastamentos.AsNoTracking().Where(x => x.Matricula == matricula).ToListAsync(cancellationToken);

@@ -18,6 +18,7 @@ public class Colaborador
     public string CnpjUnidade { get; set; } = string.Empty;
     public string? Ctps { get; set; }
     public string? Serie { get; set; }
+    public DateTime DataMovimento { get; set; }
 
     public ICollection<Afastamento> Afastamentos { get; set; } = new List<Afastamento>();
 }
