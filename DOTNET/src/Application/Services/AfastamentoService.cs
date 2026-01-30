@@ -36,6 +36,14 @@ public class AfastamentoService
                 {
                     throw new OrbiteOneException("Matrícula não informada");
                 }
+                if (!data.EmpregadoId.HasValue)
+                {
+                    throw new OrbiteOneException("Empregado id não informado");
+                }
+                if (string.IsNullOrWhiteSpace(data.Controle))
+                {
+                    throw new OrbiteOneException("Controle não informado");
+                }
 
                 var existentes = await _repository.ListarPorMatricula(data.Matricula, cancellationToken);
                 if (existentes.Count > 0)
@@ -135,6 +143,8 @@ public class AfastamentoService
             CnpjUnidade = dto.CnpjUnidade,
             CodigoSituacao = dto.CodigoSituacao,
             DataMovimento = DateTime.Now,
+            EmpregadoId = dto.EmpregadoId,
+            Controle = dto.Controle,
         };
     }
 
@@ -149,6 +159,8 @@ public class AfastamentoService
             CnpjUnidade = dto.CnpjUnidade,
             CodigoSituacao = dto.CodigoSituacao,
             DataMovimento = DateTime.Now,
+            EmpregadoId = dto.EmpregadoId ?? default,
+            Controle = dto.Controle ?? string.Empty,
         };
     }
 
@@ -160,6 +172,8 @@ public class AfastamentoService
         if (dto.DataFinal.HasValue) afastamento.DataFinal = dto.DataFinal.Value;
         if (dto.CnpjUnidade != null) afastamento.CnpjUnidade = dto.CnpjUnidade;
         if (dto.CodigoSituacao != null) afastamento.CodigoSituacao = dto.CodigoSituacao;
+        if (dto.EmpregadoId.HasValue) afastamento.EmpregadoId = dto.EmpregadoId.Value;
+        if (!string.IsNullOrWhiteSpace(dto.Controle)) afastamento.Controle = dto.Controle;
         afastamento.DataMovimento = DateTime.Now;
     }
 
@@ -171,6 +185,8 @@ public class AfastamentoService
         if (dto.DataFinal.HasValue) afastamento.DataFinal = dto.DataFinal.Value;
         if (dto.CnpjUnidade != null) afastamento.CnpjUnidade = dto.CnpjUnidade;
         if (dto.CodigoSituacao != null) afastamento.CodigoSituacao = dto.CodigoSituacao;
+        if (dto.EmpregadoId.HasValue) afastamento.EmpregadoId = dto.EmpregadoId.Value;
+        if (!string.IsNullOrWhiteSpace(dto.Controle)) afastamento.Controle = dto.Controle;
         afastamento.DataMovimento = DateTime.Now;
     }
 

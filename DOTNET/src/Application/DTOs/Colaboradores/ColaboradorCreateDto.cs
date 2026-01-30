@@ -47,4 +47,7 @@ public class ColaboradorCreateDto
 
     [MaxLength(15)]
     public string? Serie { get; set; }
+
+    [Required]
+    public long EmpregadoId { get; set; }
 }

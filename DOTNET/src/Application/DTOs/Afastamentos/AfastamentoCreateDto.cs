@@ -20,4 +20,10 @@ public class AfastamentoCreateDto
 
     [MaxLength(10)]
     public string? CodigoSituacao { get; set; }
+
+    [Required]
+    public long EmpregadoId { get; set; }
+
+    [Required, MaxLength(40)]
+    public string Controle { get; set; } = string.Empty;
 }

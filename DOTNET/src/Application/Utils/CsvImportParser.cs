@@ -77,6 +77,9 @@ public static class CsvImportParser
                     case "serie":
                         item.Serie = raw;
                         break;
+                    case "empregado_id":
+                        item.EmpregadoId = long.Parse(raw);
+                        break;
                 }
             }
 
@@ -129,6 +132,12 @@ public static class CsvImportParser
                         break;
                     case "codigo_situacao":
                         item.CodigoSituacao = raw;
+                        break;
+                    case "empregado_id":
+                        item.EmpregadoId = long.Parse(raw);
+                        break;
+                    case "controle":
+                        item.Controle = raw;
                         break;
                 }
             }

@@ -10,6 +10,8 @@ public class Afastamento
     public string? CnpjUnidade { get; set; }
     public string? CodigoSituacao { get; set; }
     public DateTime DataMovimento { get; set; }
+    public long EmpregadoId { get; set; }
+    public string Controle { get; set; } = string.Empty;
 
     public Colaborador? Colaborador { get; set; }
 }

@@ -42,6 +42,10 @@ public class ColaboradorService
                 {
                     throw new OrbiteOneException("Matrícula não informada");
                 }
+                if (!data.EmpregadoId.HasValue)
+                {
+                    throw new OrbiteOneException("Empregado id não informado");
+                }
 
                 var existente = await _repository.BuscarPorMatricula(data.Matricula, cancellationToken);
                 if (existente != null)
@@ -143,6 +147,7 @@ public class ColaboradorService
             Ctps = dto.Ctps,
             Serie = dto.Serie,
             DataMovimento = DateTime.Now,
+            EmpregadoId = dto.EmpregadoId,
         };
     }
 
@@ -166,6 +171,7 @@ public class ColaboradorService
             Ctps = dto.Ctps,
             Serie = dto.Serie,
             DataMovimento = DateTime.Now,
+            EmpregadoId = dto.EmpregadoId ?? default,
         };
     }
 
@@ -185,6 +191,7 @@ public class ColaboradorService
         if (dto.CnpjUnidade != null) colaborador.CnpjUnidade = dto.CnpjUnidade;
         if (dto.Ctps != null) colaborador.Ctps = dto.Ctps;
         if (dto.Serie != null) colaborador.Serie = dto.Serie;
+        if (dto.EmpregadoId.HasValue) colaborador.EmpregadoId = dto.EmpregadoId.Value;
         colaborador.DataMovimento = DateTime.Now;
     }
 
@@ -204,6 +211,7 @@ public class ColaboradorService
         if (dto.CnpjUnidade != null) colaborador.CnpjUnidade = dto.CnpjUnidade;
         if (dto.Ctps != null) colaborador.Ctps = dto.Ctps;
         if (dto.Serie != null) colaborador.Serie = dto.Serie;
+        if (dto.EmpregadoId.HasValue) colaborador.EmpregadoId = dto.EmpregadoId.Value;
         colaborador.DataMovimento = DateTime.Now;
     }
 

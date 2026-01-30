@@ -9,4 +9,6 @@ public class AfastamentoImportDto
     public DateTime? DataFinal { get; set; }
     public string? CnpjUnidade { get; set; }
     public string? CodigoSituacao { get; set; }
+    public long? EmpregadoId { get; set; }
+    public string? Controle { get; set; }
 }

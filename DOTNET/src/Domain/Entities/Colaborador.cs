@@ -19,6 +19,7 @@ public class Colaborador
     public string? Ctps { get; set; }
     public string? Serie { get; set; }
     public DateTime DataMovimento { get; set; }
+    public long EmpregadoId { get; set; }
 
     public ICollection<Afastamento> Afastamentos { get; set; } = new List<Afastamento>();
 }

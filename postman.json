@@ -35,7 +35,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"matricula\": \"123\",\n  \"nome\": \"João da Silva\",\n  \"pis\": \"12345678901\",\n  \"cpf\": \"12345678901\",\n  \"data_admissao\": \"2024-01-01\",\n  \"nome_setor\": \"Administrativo\",\n  \"nome_cargo\": \"Analista\",\n  \"nome_departamento\": \"RH\",\n  \"nome_unidade\": \"Matriz\",\n  \"nome_lotacao\": \"RH\",\n  \"situacao\": \"ATIVO\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"ctps\": \"12345\",\n  \"serie\": \"1\"\n}"
+              "raw": "{\n  \"matricula\": \"123\",\n  \"nome\": \"João da Silva\",\n  \"pis\": \"12345678901\",\n  \"cpf\": \"12345678901\",\n  \"data_admissao\": \"2024-01-01\",\n  \"nome_setor\": \"Administrativo\",\n  \"nome_cargo\": \"Analista\",\n  \"nome_departamento\": \"RH\",\n  \"nome_unidade\": \"Matriz\",\n  \"nome_lotacao\": \"RH\",\n  \"situacao\": \"ATIVO\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"ctps\": \"12345\",\n  \"serie\": \"1\",\n  \"empregado_id\": 1001\n}"
             },
             "url": {
               "raw": "{{base_url}}/colaboradores",
@@ -197,7 +197,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"matricula\": \"123\",\n  \"descricao\": \"Afastamento médico\",\n  \"data_inicio\": \"2024-01-10T00:00:00\",\n  \"data_final\": \"2024-01-20T00:00:00\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"codigo_situacao\": \"AF\"\n}"
+              "raw": "{\n  \"matricula\": \"123\",\n  \"descricao\": \"Afastamento médico\",\n  \"data_inicio\": \"2024-01-10T00:00:00\",\n  \"data_final\": \"2024-01-20T00:00:00\",\n  \"cnpj_unidade\": \"12345678000199\",\n  \"codigo_situacao\": \"AF\",\n  \"empregado_id\": 1001,\n  \"controle\": \"CONTROLE-001\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/afastamentos",
