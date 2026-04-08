@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Api.Controllers;
 
@@ -14,6 +15,13 @@ namespace Api.Controllers;
 [Authorize]
 public class AfastamentosController : ControllerBase
 {
+    private static readonly JsonSerializerOptions ImportJsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString,
+    };
+
     private readonly AfastamentoService _service;
 
     public AfastamentosController(AfastamentoService service)
@@ -51,7 +59,16 @@ public class AfastamentosController : ControllerBase
             throw new OrbiteOneException("Lista de afastamentos inválida");
         }
 
-        var items = JsonSerializer.Deserialize<List<AfastamentoImportDto>>(body.GetRawText()) ?? new List<AfastamentoImportDto>();
+        List<AfastamentoImportDto> items;
+        try
+        {
+            items = JsonSerializer.Deserialize<List<AfastamentoImportDto>>(body.GetRawText(), ImportJsonOptions) ?? new List<AfastamentoImportDto>();
+        }
+        catch (JsonException)
+        {
+            throw new OrbiteOneException("Lista de afastamentos inválida");
+        }
+
         var mapped = items.Select((item, index) => (linha: index + 1, data: item)).ToList();
         var result = await _service.CriarEmLote(mapped, cancellationToken);
         return StatusCode(201, result);

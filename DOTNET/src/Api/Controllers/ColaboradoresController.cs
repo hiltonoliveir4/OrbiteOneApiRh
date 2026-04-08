@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Api.Controllers;
 
@@ -14,6 +15,13 @@ namespace Api.Controllers;
 [Authorize]
 public class ColaboradoresController : ControllerBase
 {
+    private static readonly JsonSerializerOptions ImportJsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString,
+    };
+
     private readonly ColaboradorService _service;
 
     public ColaboradoresController(ColaboradorService service)
@@ -51,7 +59,16 @@ public class ColaboradoresController : ControllerBase
             throw new OrbiteOneException("Lista de colaboradores inválida");
         }
 
-        var items = JsonSerializer.Deserialize<List<ColaboradorImportDto>>(body.GetRawText()) ?? new List<ColaboradorImportDto>();
+        List<ColaboradorImportDto> items;
+        try
+        {
+            items = JsonSerializer.Deserialize<List<ColaboradorImportDto>>(body.GetRawText(), ImportJsonOptions) ?? new List<ColaboradorImportDto>();
+        }
+        catch (JsonException)
+        {
+            throw new OrbiteOneException("Lista de colaboradores inválida");
+        }
+
         var mapped = items.Select((item, index) => (linha: index + 1, data: item)).ToList();
         var result = await _service.CriarEmLote(mapped, cancellationToken);
         return StatusCode(201, result);
