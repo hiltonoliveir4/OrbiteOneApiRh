@@ -45,10 +45,9 @@ public class AfastamentoService
                     throw new OrbiteOneException("Controle não informado");
                 }
 
-                var existentes = await _repository.ListarPorMatricula(data.Matricula, cancellationToken);
-                if (existentes.Count > 0)
+                var existente = await _repository.BuscarPorControle(data.Controle, cancellationToken);
+                if (existente != null)
                 {
-                    var existente = existentes[0];
                     ApplyPatch(existente, data);
                     await _repository.Atualizar(existente, cancellationToken);
                     atualizados += 1;

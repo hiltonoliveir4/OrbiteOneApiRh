@@ -19,6 +19,11 @@ public class AfastamentoRepository : IAfastamentoRepository
         return _db.Afastamentos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public Task<Afastamento?> BuscarPorControle(string controle, CancellationToken cancellationToken = default)
+    {
+        return _db.Afastamentos.AsNoTracking().FirstOrDefaultAsync(x => x.Controle == controle, cancellationToken);
+    }
+
     public Task<List<Afastamento>> Listar(CancellationToken cancellationToken = default)
     {
         return _db.Afastamentos.AsNoTracking().ToListAsync(cancellationToken);
@@ -45,6 +50,12 @@ public class AfastamentoRepository : IAfastamentoRepository
 
     public async Task<Afastamento> Atualizar(Afastamento afastamento, CancellationToken cancellationToken = default)
     {
+        var local = _db.Afastamentos.Local.FirstOrDefault(x => x.Id == afastamento.Id);
+        if (local != null)
+        {
+            _db.Entry(local).State = EntityState.Detached;
+        }
+
         _db.Afastamentos.Update(afastamento);
         await _db.SaveChangesAsync(cancellationToken);
         return afastamento;

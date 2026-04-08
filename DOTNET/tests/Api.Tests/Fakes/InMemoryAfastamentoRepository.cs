@@ -13,6 +13,11 @@ public class InMemoryAfastamentoRepository : IAfastamentoRepository
         return Task.FromResult(_items.FirstOrDefault(x => x.Id == id));
     }
 
+    public Task<Afastamento?> BuscarPorControle(string controle, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(_items.FirstOrDefault(x => x.Controle == controle));
+    }
+
     public Task<List<Afastamento>> Listar(CancellationToken cancellationToken = default)
     {
         return Task.FromResult(_items.ToList());
