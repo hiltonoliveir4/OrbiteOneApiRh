@@ -66,6 +66,7 @@ public class AfastamentoService
                 linhasComErro.Add(new ImportErrorLineDto
                 {
                     Linha = linha,
+                    Descricao = BuildImportErrorDescription(data),
                     Erro = GetImportErrorMessage(ex),
                 });
             }
@@ -94,6 +95,13 @@ public class AfastamentoService
 
         var baseException = ex.GetBaseException();
         return string.IsNullOrWhiteSpace(baseException.Message) ? "Erro ao processar linha" : baseException.Message;
+    }
+
+    private static string BuildImportErrorDescription(AfastamentoImportDto data)
+    {
+        var empregadoId = data.EmpregadoId?.ToString() ?? "não informado";
+        var matricula = string.IsNullOrWhiteSpace(data.Matricula) ? "não informada" : data.Matricula;
+        return $"erro no envio do afastamento do empregado_id {empregadoId} com matricula {matricula}";
     }
 
     public async Task<List<AfastamentoDto>> Listar(DateTime? dataMovimento, CancellationToken cancellationToken = default)

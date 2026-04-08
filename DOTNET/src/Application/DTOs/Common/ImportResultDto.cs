@@ -13,5 +13,6 @@ public class ImportResultDto
 public class ImportErrorLineDto
 {
     public int Linha { get; set; }
+    public string Descricao { get; set; } = string.Empty;
     public string Erro { get; set; } = string.Empty;
 }

@@ -67,6 +67,7 @@ public class ColaboradorService
                 linhasComErro.Add(new ImportErrorLineDto
                 {
                     Linha = linha,
+                    Descricao = BuildImportErrorDescription(data),
                     Erro = GetImportErrorMessage(ex),
                 });
             }
@@ -95,6 +96,13 @@ public class ColaboradorService
 
         var baseException = ex.GetBaseException();
         return string.IsNullOrWhiteSpace(baseException.Message) ? "Erro ao processar linha" : baseException.Message;
+    }
+
+    private static string BuildImportErrorDescription(ColaboradorImportDto data)
+    {
+        var empregadoId = data.EmpregadoId?.ToString() ?? "não informado";
+        var matricula = string.IsNullOrWhiteSpace(data.Matricula) ? "não informada" : data.Matricula;
+        return $"erro no envio do colaborador do empregado_id {empregadoId} com matricula {matricula}";
     }
 
     public async Task<List<ColaboradorDto>> Listar(DateTime? dataMovimento, CancellationToken cancellationToken = default)
