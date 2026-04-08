@@ -18,4 +18,5 @@ public class ColaboradorImportDto
     public string? Ctps { get; set; }
     public string? Serie { get; set; }
     public long? EmpregadoId { get; set; }
+    public int? Periodo { get; set; }
 }

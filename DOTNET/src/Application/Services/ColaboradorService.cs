@@ -148,6 +148,7 @@ public class ColaboradorService
             Serie = dto.Serie,
             DataMovimento = DateTime.Now,
             EmpregadoId = dto.EmpregadoId,
+            FkPeriodo = null,
         };
     }
 
@@ -172,6 +173,7 @@ public class ColaboradorService
             Serie = dto.Serie,
             DataMovimento = DateTime.Now,
             EmpregadoId = dto.EmpregadoId ?? default,
+            FkPeriodo = dto.Periodo,
         };
     }
 
@@ -212,6 +214,7 @@ public class ColaboradorService
         if (dto.Ctps != null) colaborador.Ctps = dto.Ctps;
         if (dto.Serie != null) colaborador.Serie = dto.Serie;
         if (dto.EmpregadoId.HasValue) colaborador.EmpregadoId = dto.EmpregadoId.Value;
+        if (dto.Periodo.HasValue) colaborador.FkPeriodo = dto.Periodo.Value;
         colaborador.DataMovimento = DateTime.Now;
     }
 

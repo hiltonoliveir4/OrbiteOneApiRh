@@ -144,6 +144,7 @@ public class AfastamentoService
             CodigoSituacao = dto.CodigoSituacao,
             DataMovimento = DateTime.Now,
             EmpregadoId = dto.EmpregadoId,
+            FkPeriodo = null,
             Controle = dto.Controle,
         };
     }
@@ -160,6 +161,7 @@ public class AfastamentoService
             CodigoSituacao = dto.CodigoSituacao,
             DataMovimento = DateTime.Now,
             EmpregadoId = dto.EmpregadoId ?? default,
+            FkPeriodo = dto.Periodo,
             Controle = dto.Controle ?? string.Empty,
         };
     }
@@ -186,6 +188,7 @@ public class AfastamentoService
         if (dto.CnpjUnidade != null) afastamento.CnpjUnidade = dto.CnpjUnidade;
         if (dto.CodigoSituacao != null) afastamento.CodigoSituacao = dto.CodigoSituacao;
         if (dto.EmpregadoId.HasValue) afastamento.EmpregadoId = dto.EmpregadoId.Value;
+        if (dto.Periodo.HasValue) afastamento.FkPeriodo = dto.Periodo.Value;
         if (!string.IsNullOrWhiteSpace(dto.Controle)) afastamento.Controle = dto.Controle;
         afastamento.DataMovimento = DateTime.Now;
     }

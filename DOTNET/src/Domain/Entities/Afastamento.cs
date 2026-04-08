@@ -11,6 +11,7 @@ public class Afastamento
     public string? CodigoSituacao { get; set; }
     public DateTime DataMovimento { get; set; }
     public long EmpregadoId { get; set; }
+    public int? FkPeriodo { get; set; }
     public string Controle { get; set; } = string.Empty;
 
     public Colaborador? Colaborador { get; set; }

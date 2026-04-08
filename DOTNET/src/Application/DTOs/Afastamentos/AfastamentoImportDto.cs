@@ -10,5 +10,6 @@ public class AfastamentoImportDto
     public string? CnpjUnidade { get; set; }
     public string? CodigoSituacao { get; set; }
     public long? EmpregadoId { get; set; }
+    public int? Periodo { get; set; }
     public string? Controle { get; set; }
 }

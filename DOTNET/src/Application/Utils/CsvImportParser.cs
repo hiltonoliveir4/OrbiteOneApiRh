@@ -80,6 +80,9 @@ public static class CsvImportParser
                     case "empregado_id":
                         item.EmpregadoId = long.Parse(raw);
                         break;
+                    case "periodo":
+                        item.Periodo = int.Parse(raw);
+                        break;
                 }
             }
 
@@ -135,6 +138,9 @@ public static class CsvImportParser
                         break;
                     case "empregado_id":
                         item.EmpregadoId = long.Parse(raw);
+                        break;
+                    case "periodo":
+                        item.Periodo = int.Parse(raw);
                         break;
                     case "controle":
                         item.Controle = raw;
