@@ -66,7 +66,7 @@ public class AfastamentoService
                 linhasComErro.Add(new ImportErrorLineDto
                 {
                     Linha = linha,
-                    Erro = ex is OrbiteOneException ? ex.Message : "Erro ao processar linha",
+                    Erro = GetImportErrorMessage(ex),
                 });
             }
         }
@@ -83,6 +83,17 @@ public class AfastamentoService
             Erros = linhasComErro.Count,
             LinhasComErro = linhasComErro,
         };
+    }
+
+    private static string GetImportErrorMessage(Exception ex)
+    {
+        if (ex is OrbiteOneException)
+        {
+            return ex.Message;
+        }
+
+        var baseException = ex.GetBaseException();
+        return string.IsNullOrWhiteSpace(baseException.Message) ? "Erro ao processar linha" : baseException.Message;
     }
 
     public async Task<List<AfastamentoDto>> Listar(DateTime? dataMovimento, CancellationToken cancellationToken = default)
