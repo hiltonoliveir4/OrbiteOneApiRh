@@ -122,10 +122,10 @@ public static class CsvImportParser
                         item.Descricao = raw;
                         break;
                     case "data_inicio":
-                        item.DataInicio = DateTime.Parse(raw);
+                        item.DataInicio = DateOnly.Parse(raw);
                         break;
                     case "data_final":
-                        item.DataFinal = DateTime.Parse(raw);
+                        item.DataFinal = DateOnly.Parse(raw);
                         break;
                     case "cnpj_unidade":
                         item.CnpjUnidade = raw;

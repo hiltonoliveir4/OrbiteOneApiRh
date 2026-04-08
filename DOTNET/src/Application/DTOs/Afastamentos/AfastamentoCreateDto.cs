@@ -11,9 +11,9 @@ public class AfastamentoCreateDto
     public string Descricao { get; set; } = string.Empty;
 
     [Required]
-    public DateTime DataInicio { get; set; }
+    public DateOnly DataInicio { get; set; }
 
-    public DateTime? DataFinal { get; set; }
+    public DateOnly? DataFinal { get; set; }
 
     [MaxLength(14)]
     public string? CnpjUnidade { get; set; }

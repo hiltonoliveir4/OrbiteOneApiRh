@@ -55,8 +55,8 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Matricula).HasColumnName("matricula").HasMaxLength(13).IsRequired();
             entity.Property(e => e.Descricao).HasColumnName("descricao").HasMaxLength(50).IsRequired();
-            entity.Property(e => e.DataInicio).HasColumnName("data_inicio").IsRequired();
-            entity.Property(e => e.DataFinal).HasColumnName("data_final");
+            entity.Property(e => e.DataInicio).HasColumnName("data_inicio").HasColumnType("date").IsRequired();
+            entity.Property(e => e.DataFinal).HasColumnName("data_final").HasColumnType("date");
             entity.Property(e => e.CnpjUnidade).HasColumnName("cnpj_unidade").HasMaxLength(14);
             entity.Property(e => e.CodigoSituacao).HasColumnName("codigo_situacao").HasMaxLength(10);
             entity.Property(e => e.DataMovimento).HasColumnName("datamovimento").HasColumnType("timestamp without time zone").IsRequired();

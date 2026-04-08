@@ -19,7 +19,7 @@ public class AfastamentoServiceTests
         {
             Matricula = "123",
             Descricao = "Licenca",
-            DataInicio = new DateTime(2024, 1, 10),
+            DataInicio = new DateOnly(2024, 1, 10),
         };
 
         var created = await service.Criar(dto);
@@ -53,8 +53,8 @@ public class AfastamentoServiceTests
 
         var items = new List<(int linha, AfastamentoImportDto data)>
         {
-            (1, new AfastamentoImportDto { Matricula = "123", Descricao = "Licenca", DataInicio = new DateTime(2024, 1, 10) }),
-            (2, new AfastamentoImportDto { Matricula = "124", Descricao = "Ferias", DataInicio = new DateTime(2024, 2, 10) })
+            (1, new AfastamentoImportDto { Matricula = "123", Descricao = "Licenca", DataInicio = new DateOnly(2024, 1, 10) }),
+            (2, new AfastamentoImportDto { Matricula = "124", Descricao = "Ferias", DataInicio = new DateOnly(2024, 2, 10) })
         };
 
         var result = await service.CriarEmLote(items);
